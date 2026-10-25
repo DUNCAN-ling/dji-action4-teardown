@@ -569,8 +569,7 @@ function selectPart(index, opts = {}) {
   clearHoverOutline();
 
   if (opts.explode !== false) {
-    const minimum = window.innerWidth <= 820 ? 58 : 66;
-    if (state.target < minimum) setExplode(minimum + 8);
+    if (state.target < 96) setExplode(100);
   } else if (state.target < 8) {
     setExplode(26);
   }

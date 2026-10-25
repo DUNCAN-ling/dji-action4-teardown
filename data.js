@@ -68,7 +68,7 @@ export const PARTS = [
     en: 'IMAGE PROCESSING BOARD',
     sub: 'COMPUTE CORE',
     specLine: 'H.265 · 130 Mbps',
-    offset: [2.0, 1.9, 1.6],
+    offset: [1.6, 2.5, 1.6],
     anchor: [-0.7, -0.15, 0.2],
     desc:
       '主板集成影像处理器、存储控制器、无线模块与电源管理。它把传感器读出的高速数据压缩为 H.265 视频，最高码率 130 Mbps，并同时驱动前后双屏、RockSteady 3.0 增稳与无线图传。',
@@ -87,7 +87,7 @@ export const PARTS = [
     en: 'THERMAL MODULE',
     sub: 'HEAT DISSIPATION',
     specLine: '石墨 + 铜 · 持续录制',
-    offset: [-2.85, 2.45, -0.35],
+    offset: [-3.4, 2.7, -0.35],
     anchor: [-1.2, 1.3, -0.3],
     desc:
       '高帧率与高码率意味着持续的热负载。石墨导热片把 SoC 与传感器的热量快速摊平，铜质均热板与鳍片将热量导向机身外壳，使 4K/120fps 长时间录制依然稳定。',
@@ -163,7 +163,7 @@ export const PARTS = [
     en: 'TOP CONTROL MODULE',
     sub: 'SHUTTER / QS',
     specLine: '快门 · 快速切换',
-    offset: [0.75, 2.55, -0.2],
+    offset: [-0.5, 3.4, -0.2],
     anchor: [0.5, 2.3, 0.3],
     desc:
       '顶部集中了快门、快速切换与收音开孔。快门外圈以红色环标识录制状态，按压行程经过专门调校，戴手套也能获得清晰的触觉反馈；双麦克风开孔负责前向收音与风噪抑制。',
