@@ -49,7 +49,7 @@ export const PARTS = [
     en: 'FRONT TOUCHSCREEN',
     sub: 'SELFIE DISPLAY',
     specLine: '1.4" · 320 × 320',
-    offset: [4.0, 2.9, 3.15],
+    offset: [4.0, 3.4, 3.15],
     anchor: [1.9, 0.1, 1.6],
     desc:
       '方形前置触摸屏让自拍构图不再盲拍。屏幕与后屏可同步显示取景画面，也可独立完成参数调整、模式切换与回放操作，是 vlog 场景中使用频率最高的交互界面。',
@@ -106,7 +106,7 @@ export const PARTS = [
     en: '1770mAh BATTERY',
     sub: 'POWER CELL',
     specLine: '3.85 V · 6.8 Wh',
-    offset: [2.8, -1.9, 0.85],
+    offset: [2.8, -2.9, 0.85],
     anchor: [2.35, -0.55, 0.6],
     desc:
       '1770mAh 锂电池提供约 160 分钟的 1080p 续航，并支持低温放电。电池仓与机身密封结构共同构成 18 米裸机防水能力的一部分，仓盖锁止后形成完整的压力边界。',
