@@ -15,11 +15,11 @@ python -m http.server 8899 --bind 127.0.0.1
 
 Windows 下也可以直接双击 `start.bat`，脚本会自动启动本地服务器并打开浏览器。
 
-### 临时公网分享
+### 公网访问
 
-需要把页面发给别人看时，双击 `start-public.bat`。脚本会复用本地 8899 服务并启动一个 Cloudflare Quick Tunnel，终端里会打印形如 `https://xxxx.trycloudflare.com` 的地址；把这个地址发给别人即可直接打开，无需登录、无需在本机操作。保持该窗口与本地服务器运行，地址才有效；关闭后地址失效，下次启动会生成新地址。
+永久地址：<https://duncan-ling.github.io/dji-action4-teardown/>
 
-> 这是临时预览方案，适合评审、演示和发给朋友；如果需要长期稳定地址，建议部署到静态托管（GitHub Pages / Netlify / Vercel 等）。
+页面由 GitHub Pages 托管，任何人不需登录即可打开，也不依赖本机是否开机。源码仓库：<https://github.com/DUNCAN-ling/dji-action4-teardown>。
 
 ## 交互
 
@@ -68,7 +68,6 @@ model.js            程序化几何与 Canvas 纹理
 data.js             11 个模块的名称、描述、参数、爆炸位移
 vendor/three/       本地 Three.js 0.161.0 与 addons
 start.bat           Windows 一键本地服务器
-start-public.bat    Windows 一键公网临时分享（Cloudflare Tunnel）
 tools/cdp-*.mjs    无头 Chrome 截图 / 交互回归脚本（开发用）
 ```
 
