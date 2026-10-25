@@ -68,7 +68,7 @@ export const PARTS = [
     en: 'IMAGE PROCESSING BOARD',
     sub: 'COMPUTE CORE',
     specLine: 'H.265 · 130 Mbps',
-    offset: [2.0, 1.6, 0.35],
+    offset: [1.0, 3.2, -2.0],
     anchor: [-0.7, -0.15, 0.2],
     desc:
       '主板集成影像处理器、存储控制器、无线模块与电源管理。它把传感器读出的高速数据压缩为 H.265 视频，最高码率 130 Mbps，并同时驱动前后双屏、RockSteady 3.0 增稳与无线图传。',
