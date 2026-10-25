@@ -49,7 +49,7 @@ export const PARTS = [
     en: 'FRONT TOUCHSCREEN',
     sub: 'SELFIE DISPLAY',
     specLine: '1.4" · 320 × 320',
-    offset: [2.2, 1.1, 2.8],
+    offset: [4.0, 2.9, 3.15],
     anchor: [1.9, 0.1, 1.6],
     desc:
       '方形前置触摸屏让自拍构图不再盲拍。屏幕与后屏可同步显示取景画面，也可独立完成参数调整、模式切换与回放操作，是 vlog 场景中使用频率最高的交互界面。',
@@ -68,7 +68,7 @@ export const PARTS = [
     en: 'IMAGE PROCESSING BOARD',
     sub: 'COMPUTE CORE',
     specLine: 'H.265 · 130 Mbps',
-    offset: [3.0, 1.6, 0.35],
+    offset: [2.0, 1.6, 0.35],
     anchor: [-0.7, -0.15, 0.2],
     desc:
       '主板集成影像处理器、存储控制器、无线模块与电源管理。它把传感器读出的高速数据压缩为 H.265 视频，最高码率 130 Mbps，并同时驱动前后双屏、RockSteady 3.0 增稳与无线图传。',
@@ -87,7 +87,7 @@ export const PARTS = [
     en: 'THERMAL MODULE',
     sub: 'HEAT DISSIPATION',
     specLine: '石墨 + 铜 · 持续录制',
-    offset: [-2.5, 2.2, -0.3],
+    offset: [-2.85, 2.45, -0.35],
     anchor: [-1.2, 1.3, -0.3],
     desc:
       '高帧率与高码率意味着持续的热负载。石墨导热片把 SoC 与传感器的热量快速摊平，铜质均热板与鳍片将热量导向机身外壳，使 4K/120fps 长时间录制依然稳定。',
@@ -106,7 +106,7 @@ export const PARTS = [
     en: '1770mAh BATTERY',
     sub: 'POWER CELL',
     specLine: '3.85 V · 6.8 Wh',
-    offset: [2.8, -1.25, 0.85],
+    offset: [2.8, -1.9, 0.85],
     anchor: [2.35, -0.55, 0.6],
     desc:
       '1770mAh 锂电池提供约 160 分钟的 1080p 续航，并支持低温放电。电池仓与机身密封结构共同构成 18 米裸机防水能力的一部分，仓盖锁止后形成完整的压力边界。',
@@ -163,7 +163,7 @@ export const PARTS = [
     en: 'TOP CONTROL MODULE',
     sub: 'SHUTTER / QS',
     specLine: '快门 · 快速切换',
-    offset: [0.45, 2.2, -0.15],
+    offset: [0.75, 2.55, -0.2],
     anchor: [0.5, 2.3, 0.3],
     desc:
       '顶部集中了快门、快速切换与收音开孔。快门外圈以红色环标识录制状态，按压行程经过专门调校，戴手套也能获得清晰的触觉反馈；双麦克风开孔负责前向收音与风噪抑制。',

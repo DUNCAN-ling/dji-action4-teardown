@@ -483,12 +483,17 @@ function updateExplosion(dt) {
   const e = state.explode / 100;
   const mobile = state.layout.mobile;
   modelRoot.scale.setScalar(1 - (mobile ? 0.32 : 0.3) * e);
+  modelRoot.rotation.x = -0.16 * e * (mobile ? 0.7 : 1);
 
   for (const p of parts) {
     const delay = (p.index % 5) * 0.022;
     const local = e <= 0 ? 0 : clamp((e - delay) / (1 - delay), 0, 1);
     const k = easeOutCubic(local);
+    const shrink = p.def.id === 'front-shell' ? 0.28 : p.def.id === 'frame' ? 0.2 : 0.07;
+    const s = 1 - shrink * k * state.explodeScale;
+    p.group.scale.setScalar(s);
     p.group.position.copy(p.offset).multiplyScalar(k * state.explodeScale);
+    p.group.position.addScaledVector(p.center, 1 - s);
   }
 
   // Keep the assembly centred while it opens so nothing slides behind the HUD.
