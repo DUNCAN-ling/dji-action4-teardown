@@ -489,7 +489,7 @@ function updateExplosion(dt) {
     const delay = (p.index % 5) * 0.022;
     const local = e <= 0 ? 0 : clamp((e - delay) / (1 - delay), 0, 1);
     const k = easeOutCubic(local);
-    const shrink = p.def.id === 'front-shell' ? 0.28 : p.def.id === 'frame' ? 0.2 : 0.07;
+    const shrink = p.def.id === 'front-shell' ? 0.28 : p.def.id === 'frame' ? 0.35 : 0.07;
     const s = 1 - shrink * k * state.explodeScale;
     p.group.scale.setScalar(s);
     p.group.position.copy(p.offset).multiplyScalar(k * state.explodeScale);

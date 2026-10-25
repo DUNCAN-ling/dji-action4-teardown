@@ -68,7 +68,7 @@ export const PARTS = [
     en: 'IMAGE PROCESSING BOARD',
     sub: 'COMPUTE CORE',
     specLine: 'H.265 · 130 Mbps',
-    offset: [1.0, 3.2, -2.0],
+    offset: [2.0, 1.9, 1.6],
     anchor: [-0.7, -0.15, 0.2],
     desc:
       '主板集成影像处理器、存储控制器、无线模块与电源管理。它把传感器读出的高速数据压缩为 H.265 视频，最高码率 130 Mbps，并同时驱动前后双屏、RockSteady 3.0 增稳与无线图传。',
@@ -144,7 +144,7 @@ export const PARTS = [
     en: 'MID FRAME / CHASSIS',
     sub: 'STRUCTURAL CORE',
     specLine: '70.5 × 44.2 × 32.8 mm',
-    offset: [-0.25, -0.85, -0.15],
+    offset: [-0.25, -1.15, -0.15],
     anchor: [-2.65, 1.7, 0],
     desc:
       '中框是整机的力学与密封骨架：外侧承担跌落冲击，内侧为电池、主板和屏幕提供定位与导热路径。紧凑的 70.5 × 44.2 × 32.8 mm 体积内，塞下了大底传感器、双屏与 18 米防水结构。',
