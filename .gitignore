@@ -1,0 +1,12 @@
+# local tooling / tunnels / test artifacts
+.tunnel/
+.chrome-cdp/
+site.zip
+shot-*.png
+preview-*.png
+tools/
+*.log
+
+# personal vault note and local-only tunnel launcher
+DJI Action 4 拆解可视化.md
+start-public.bat

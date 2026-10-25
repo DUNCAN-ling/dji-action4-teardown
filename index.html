@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#05070b" />
+  <title>DJI Osmo Action 4 · 3D 拆解实验室</title>
+  <meta name="description" content="用 Three.js 构建的 DJI Osmo Action 4 交互式 3D 拆解可视化：点击部件、自由旋转缩放、查看模块参数。" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="scene" aria-label="DJI Osmo Action 4 三维交互模型"></canvas>
+
+    <div class="fx fx-vignette" aria-hidden="true"></div>
+    <div class="fx fx-scanlines" aria-hidden="true"></div>
+    <div class="fx fx-grain" aria-hidden="true"></div>
+
+    <!-- ══════════ TOP BAR ══════════ -->
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="brand-type">
+          <div class="brand-line">
+            <span class="brand-dji">DJI</span>
+            <span class="brand-sep"></span>
+            <span class="brand-product">OSMO ACTION 4</span>
+          </div>
+          <div class="brand-sub">INTERACTIVE TEARDOWN <i></i> LAB / 01</div>
+        </div>
+      </div>
+
+      <div class="top-status" aria-hidden="true">
+        <span class="status-dot"></span>
+        <span>DIGITAL TWIN ONLINE</span>
+        <span class="status-divider"></span>
+        <span class="mono" id="clock">00:00:00</span>
+      </div>
+
+      <div class="top-actions">
+        <div class="quick-specs" aria-hidden="true">
+          <span>1/1.3"</span><b>/</b><span>4K 120</span><b>/</b><span>18M</span>
+        </div>
+        <button class="icon-btn" id="helpBtn" type="button" aria-label="打开操作指南" title="操作指南 (H)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.1 9a3 3 0 1 1 4.8 2.4c-1.2.9-1.9 1.5-1.9 2.8"/><circle cx="12" cy="17.6" r="1"/></svg>
+        </button>
+        <button class="icon-btn" id="soundlessBtn" type="button" aria-label="性能模式：关闭辉光并降低渲染分辨率" title="性能模式（关闭辉光）">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="3.4"/></svg>
+        </button>
+        <button class="mobile-panel-btn" id="mobilePartsBtn" type="button">部件</button>
+        <button class="mobile-panel-btn" id="mobileInfoBtn" type="button">解析</button>
+      </div>
+    </header>
+
+    <!-- ══════════ LEFT / PART INDEX ══════════ -->
+    <aside class="panel panel-left" id="partsPanel" aria-label="部件清单">
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow"><span class="idx">A</span> MODULE INDEX</div>
+          <h2>部件清单</h2>
+        </div>
+        <div class="part-count"><span id="partCount">11</span><small>MODULES</small></div>
+      </div>
+
+      <div class="overview-strip">
+        <div><strong>145</strong><span>g</span><small>机身重量</small></div>
+        <div><strong>1770</strong><span>mAh</span><small>电池容量</small></div>
+        <div><strong>18</strong><span>m</span><small>裸机防水</small></div>
+      </div>
+
+      <div class="part-list" id="partList" role="list"></div>
+
+      <div class="panel-foot">
+        <div class="progress-meta">
+          <span>TEARDOWN PROGRESS</span>
+          <span id="teardownPercent" class="mono">00%</span>
+        </div>
+        <div class="progress-track"><i id="teardownBar"></i></div>
+        <p class="panel-note">内部结构为三维可视化示意，非官方维修拆解资料。</p>
+      </div>
+    </aside>
+
+    <!-- ══════════ RIGHT / ANALYSIS ══════════ -->
+    <aside class="panel panel-right" id="infoPanel" aria-label="部件解析">
+      <div class="panel-head compact">
+        <div>
+          <div class="eyebrow"><span class="idx">B</span> COMPONENT ANALYSIS</div>
+          <h2>部件解析</h2>
+        </div>
+        <button class="panel-close" id="closeInfoBtn" type="button" aria-label="关闭部件解析">×</button>
+      </div>
+
+      <div class="info-scroll" id="infoScroll">
+        <div id="infoDefault">
+          <div class="hero-kicker">OSMO ACTION 4 / STRUCTURAL STUDY</div>
+          <div class="hero-title">把旗舰影像<br>拆开给你看。</div>
+          <p class="hero-desc">1/1.3 英寸传感器 · 4K/120fps · 18 米防水。点击任意模块，进入结构级拆解。</p>
+          <div class="hero-spec-grid">
+            <div><span>传感器</span><b>1/1.3"</b></div>
+            <div><span>最高视频</span><b>4K/120</b></div>
+            <div><span>视场角</span><b>155°</b></div>
+            <div><span>续航</span><b>160 MIN</b></div>
+          </div>
+          <button class="hero-cta" id="heroExplode" type="button">
+            <span class="hero-cta-text">
+              <span class="hero-cta-label">开始拆解</span>
+              <span class="hero-cta-meta">EXPLODE 11 MODULES</span>
+            </span>
+            <i aria-hidden="true">→</i>
+          </button>
+          <div class="hero-callout">
+            <span class="callout-glyph">◎</span>
+            <p>11 个模块 · 全部由 Three.js 几何体实时生成</p>
+          </div>
+        </div>
+
+        <div id="infoDetail" hidden>
+          <div class="detail-head">
+            <div class="detail-index mono" id="detailIndex">01</div>
+            <div class="detail-heading">
+              <div class="detail-en" id="detailEn">FRONT SHELL / LENS</div>
+              <h3 id="detailName">前壳 · 镜头总成</h3>
+            </div>
+            <button class="detail-close" id="detailClose" type="button" aria-label="取消选择">×</button>
+          </div>
+          <p class="detail-desc" id="detailDesc"></p>
+          <div class="detail-tags" id="detailTags"></div>
+          <div class="spec-table" id="detailSpecs"></div>
+          <div class="detail-actions">
+            <button class="action-primary" id="focusPartBtn" type="button">
+              <span class="focus-ring" aria-hidden="true"></span>聚焦此部件
+            </button>
+            <button class="action-ghost" id="overviewBtn" type="button">返回全景</button>
+          </div>
+          <div class="detail-foot">
+            <span class="live-dot"></span>
+            <span>MODULE SELECTED</span>
+            <span class="mono" id="detailCoord">X 00.0 / Y 00.0 / Z 00.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-caption">
+        <span>STRUCTURAL SCHEMATIC</span>
+        <span>2026 / V1.0</span>
+      </div>
+    </aside>
+
+    <!-- ══════════ HOVER TOOLTIP ══════════ -->
+    <div id="hoverTooltip" class="hover-tooltip" aria-hidden="true">
+      <span class="hover-index mono"></span>
+      <span class="hover-name"></span>
+      <span class="hover-hint">CLICK TO DECOMPOSE</span>
+    </div>
+
+    <!-- ══════════ ANNOTATION LAYER ══════════ -->
+    <div id="annotations" class="annotations" aria-hidden="true">
+      <svg id="annotationSvg"></svg>
+      <div id="annotationLabels"></div>
+    </div>
+
+    <!-- ══════════ BOTTOM CONTROL DECK ══════════ -->
+    <div class="control-deck" id="controlDeck">
+      <div class="deck-guide">
+        <span class="guide-chip"><i class="mouse-icon"></i>拖拽旋转</span>
+        <span class="guide-chip"><i class="wheel-icon"></i>滚轮缩放</span>
+        <span class="guide-chip"><i class="tap-icon"></i>点击部件</span>
+      </div>
+
+      <div class="deck-main">
+        <div class="explode-control">
+          <div class="explode-label">
+            <span>EXPLODE</span>
+            <b class="mono" id="explodeValue">00</b><em>%</em>
+          </div>
+          <div class="range-wrap">
+            <input id="explodeRange" type="range" min="0" max="100" value="0" step="1" aria-label="拆解程度" />
+            <div class="range-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+
+        <div class="deck-buttons">
+          <button class="deck-btn primary" id="explodeBtn" type="button" title="全部拆解 (E)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16M6.3 6.3l11.4 11.4M17.7 6.3 6.3 17.7"/><circle cx="12" cy="12" r="3.2"/></svg>
+            <span>全部拆解</span>
+          </button>
+          <button class="deck-btn" id="assembleBtn" type="button" title="组装复位 (R)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4 4 8l4 4M4 8h11a5 5 0 0 1 5 5v3"/><path d="M16 20l4-4-4-4"/></svg>
+            <span>组装复位</span>
+          </button>
+          <button class="deck-btn toggle active" id="rotateBtn" type="button" title="自动旋转">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M19.3 12a7.5 7.5 0 0 0-12.8-4.4L4 10M4.7 12a7.5 7.5 0 0 0 12.8 4.4L20 14"/></svg>
+            <span>自动旋转</span>
+          </button>
+          <button class="deck-btn toggle active" id="labelsBtn" type="button" title="标注显示 (L)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h9M4 12h6M4 18h8"/><path d="m15 10 2.5 2.5L22 7.5"/></svg>
+            <span>标注</span>
+          </button>
+          <button class="deck-btn" id="resetBtn" type="button" title="重置视角 (V)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 15v5h-5"/><path d="M5.5 5.5 19 19"/><circle cx="12" cy="12" r="5"/></svg>
+            <span>视角</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ ONBOARDING ══════════ -->
+    <div class="onboarding" id="onboarding">
+      <span class="onboarding-line"></span>
+      <p>拖拽旋转 · 点击部件查看详情 · 双击聚焦</p>
+      <button type="button" id="dismissOnboarding" aria-label="关闭引导">×</button>
+    </div>
+
+    <button class="mobile-cta" id="mobileCta" type="button">
+      <span id="mobileCtaLabel">开始拆解</span>
+      <i aria-hidden="true">→</i>
+    </button>
+
+    <!-- ══════════ HELP MODAL ══════════ -->
+    <div class="modal" id="helpModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="操作指南">
+      <div class="modal-scrim" data-close-modal></div>
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <div class="eyebrow"><span class="idx">?</span> OPERATION MANUAL</div>
+            <h2>操作指南</h2>
+          </div>
+          <button class="modal-close" type="button" data-close-modal aria-label="关闭">×</button>
+        </div>
+        <div class="manual-grid">
+          <div class="manual-item">
+            <span class="manual-no mono">01</span>
+            <div class="manual-icon"><svg viewBox="0 0 48 48"><path d="M16 10a4 4 0 0 1 4 4v10-2a4 4 0 0 1 8 0v-4a4 4 0 0 1 8 0v4a4 4 0 0 1 6 3.5V33a9 9 0 0 1-9 9h-6a10 10 0 0 1-8-4l-7-9a3.6 3.6 0 0 1 5.4-4.7L20 30V14a4 4 0 0 1-4-4Z"/></svg></div>
+            <h3>环顾 / ORBIT</h3><p>按住左键拖拽旋转视角，滚轮或双指捏合缩放。右键平移已禁用，保持构图稳定。</p>
+          </div>
+          <div class="manual-item">
+            <span class="manual-no mono">02</span>
+            <div class="manual-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="15"/><circle cx="24" cy="24" r="5"/><path d="M24 4v7M24 37v7M4 24h7M37 24h7"/></svg></div>
+            <h3>拆解 / EXPLODE</h3><p>点击机身部件或左侧清单，所有模块沿结构轴线展开。拖动底部滑杆可逐帧控制拆解程度。</p>
+          </div>
+          <div class="manual-item">
+            <span class="manual-no mono">03</span>
+            <div class="manual-icon"><svg viewBox="0 0 48 48"><path d="M10 16V9h7M38 32v7h-7"/><rect x="15" y="15" width="18" height="18" rx="3"/><path d="M8 24h6M34 24h6M24 8v6M24 34v6"/></svg></div>
+            <h3>聚焦 / INSPECT</h3><p>双击部件或在详情面板点击「聚焦此部件」，镜头会平滑推近，方便观察结构。按 V 返回全景。</p>
+          </div>
+          <div class="manual-item">
+            <span class="manual-no mono">04</span>
+            <div class="manual-icon"><svg viewBox="0 0 48 48"><path d="M12 8h24v32H12z"/><path d="M17 15h14M17 21h14M17 27h8"/><circle cx="32" cy="33" r="2"/></svg></div>
+            <h3>阅读 / DECODE</h3><p>右侧面板展示选中模块的功能描述、关键参数与结构标签。标注线在拆解后自动出现。</p>
+          </div>
+        </div>
+        <div class="shortcut-row">
+          <span><kbd>E</kbd>拆解</span><span><kbd>R</kbd>复位</span><span><kbd>L</kbd>标注</span><span><kbd>V</kbd>视角</span><span><kbd>H</kbd>帮助</span><span><kbd>ESC</kbd>关闭</span>
+        </div>
+        <div class="modal-note perf-note">性能提示：若仍觉卡顿，点右上角 ☀ 切换性能模式（关闭辉光并降低渲染分辨率）；自动旋转默认关闭，可在底栏手动开启。</div>
+        <div class="modal-note">本页面为独立概念可视化作品，与 DJI 官方无关联。部件外观与内部排布经过艺术化处理。</div>
+      </div>
+    </div>
+
+    <!-- ══════════ PERFORMANCE TOAST ══════════ -->
+    <div class="perf-toast" id="perfToast" role="status" aria-live="polite">已自动降低特效以保持流畅 · 点右上角 ☀ 恢复辉光</div>
+
+    <!-- ══════════ LOADER ══════════ -->
+    <div class="loader" id="loader">
+      <div class="loader-inner">
+        <div class="loader-brand">
+          <div class="brand-mark large" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <div class="loader-word">DJI <i>/</i> ACTION 4</div>
+        </div>
+        <div class="loader-title">INITIALIZING DIGITAL TWIN</div>
+        <div class="loader-bar"><i id="loaderBar"></i></div>
+        <div class="loader-meta"><span class="mono" id="loaderPercent">000%</span><span>REALTIME GEOMETRY / NO EXTERNAL MODEL</span></div>
+      </div>
+      <div class="loader-corner tl"></div><div class="loader-corner tr"></div><div class="loader-corner bl"></div><div class="loader-corner br"></div>
+    </div>
+
+    <noscript><div class="noscript">此页面需要启用 JavaScript 才能运行 Three.js 交互模型。</div></noscript>
+  </div>
+
+  <script>
+    (function () {
+      var loadFailed = false;
+      function explain(title, meta, withRetry) {
+        if (window.__DSH_APP_READY) return;
+        var loader = document.getElementById('loader');
+        var t = loader && loader.querySelector('.loader-title');
+        var m = loader && loader.querySelector('.loader-meta span:last-child');
+        var p = document.getElementById('loaderPercent');
+        var bar = document.getElementById('loaderBar');
+        if (t) t.textContent = title;
+        if (m) m.textContent = meta;
+        if (p) p.textContent = 'ERR';
+        if (bar) { bar.style.width = '100%'; bar.style.background = '#ff5c3d'; }
+        if (withRetry && loader && !loader.querySelector('.loader-retry')) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'loader-retry';
+          btn.textContent = '重新加载';
+          btn.style.cssText = 'margin-top:18px;padding:9px 18px;border:1px solid rgba(88,230,255,.55);background:rgba(88,230,255,.08);color:#9fefff;font:inherit;font-size:11px;letter-spacing:.14em;cursor:pointer;';
+          btn.addEventListener('click', function () { location.reload(); });
+          var inner = loader.querySelector('.loader-inner');
+          if (inner) inner.appendChild(btn);
+        }
+      }
+      function fileHint() {
+        explain('请通过 HTTP 打开 · 127.0.0.1:8899', '双击 start.bat，或运行 python -m http.server 8899');
+      }
+      if (location.protocol === 'file:') {
+        document.addEventListener('DOMContentLoaded', fileHint);
+      }
+      window.addEventListener('error', function () {
+        loadFailed = true;
+        if (location.protocol === 'file:') {
+          setTimeout(fileHint, 300);
+          return;
+        }
+        setTimeout(function () {
+          explain('无法加载 3D 模块', '本地服务器可能尚未就绪，或浏览器不支持 WebGL 2。', true);
+        }, 800);
+      }, true);
+      // 首次通过 start.bat 打开时，浏览器可能早于服务器就绪；自动重试一次。
+      if (location.protocol.indexOf('http') === 0) {
+        try {
+          if (!sessionStorage.getItem('dji-boot-retry')) {
+            sessionStorage.setItem('dji-boot-retry', '1');
+            setTimeout(function () {
+              if (loadFailed && !window.__DSH_APP_READY) location.reload();
+            }, 4200);
+          }
+        } catch (e) { /* private mode */ }
+      }
+    })();
+  </script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three/build/three.module.js",
+      "three/addons/": "./vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
